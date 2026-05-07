@@ -1,0 +1,114 @@
+#:kivy 2.3.0
+
+<TestSelector>:
+    orientation: 'horizontal'
+    size_hint_y: None
+    height: dp(40)
+    padding: [dp(10), 0]
+
+<TestRunnerRoot>:
+    test_scroll: test_scroll
+    tests_container: tests_container
+    search_input: search_input
+    marker_spinner: marker_spinner
+    run_btn: run_btn
+    stop_btn: stop_btn
+    progress_bar: progress_bar
+    log_text: log_text
+    log_scroll: log_scroll
+
+    orientation: 'vertical'
+    padding: dp(10)
+    spacing: dp(10)
+
+    BoxLayout:
+        size_hint_y: None
+        height: dp(40)
+        spacing: dp(10)
+
+        Label:
+            text: 'Фильтр по маркеру:'
+            size_hint_x: None
+            width: dp(120)
+            color: 1, 1, 1, 1
+
+        Spinner:
+            id: marker_spinner
+            text: 'all'
+            values: root.available_markers
+            on_text: root.on_marker_change(self.text)
+            background_color: 0.2, 0.2, 0.2, 1
+            color: 1, 1, 1, 1
+
+        TextInput:
+            id: search_input
+            hint_text: 'Поиск по названию...'
+            size_hint_x: 0.4
+            on_text: root.on_search_change(self.text)
+            background_color: 0.2, 0.2, 0.2, 1
+            foreground_color: 1, 1, 1, 1
+            hint_text_color: 0.7, 0.7, 0.7, 1
+
+    BoxLayout:
+        size_hint_y: None
+        height: dp(40)
+        spacing: dp(10)
+
+        Button:
+            id: run_btn
+            text: 'Запустить выбранные тесты'
+            on_release: root.run_selected_tests()
+            background_color: 0.2, 0.6, 0.9, 1
+            color: 1, 1, 1, 1
+
+        Button:
+            id: stop_btn
+            text: 'Остановить'
+            disabled: True
+            on_release: root.stop_tests()
+            background_color: 0.6, 0.2, 0.2, 1
+            color: 1, 1, 1, 1
+
+        Button:
+            text: 'Сохранить лог'
+            on_release: root.save_log()
+            background_color: 0.3, 0.3, 0.3, 1
+            color: 1, 1, 1, 1
+
+    Label:
+        size_hint_y: None
+        height: dp(25)
+        text: 'Список тестов:'
+        color: 1, 1, 1, 1
+
+    ScrollView:
+        id: test_scroll
+        size_hint_y: 0.4
+        GridLayout:
+            id: tests_container
+            cols: 1
+            size_hint_y: None
+            height: self.minimum_height
+
+    ProgressBar:
+        id: progress_bar
+        size_hint_y: None
+        height: dp(20)
+
+    Label:
+        size_hint_y: None
+        height: dp(25)
+        text: 'Результаты:'
+        color: 1, 1, 1, 1
+
+    ScrollView:
+        id: log_scroll
+        size_hint_y: 0.4
+        TextInput:
+            id: log_text
+            readonly: True
+            multiline: True
+            markup: True
+            font_size: '10sp'
+            background_color: 0.05, 0.05, 0.05, 1
+            foreground_color: 1, 1, 1, 1
